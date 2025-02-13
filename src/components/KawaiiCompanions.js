@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Music, Star, Volume2 } from 'lucide-react';
 
 const KawaiiCompanions = ({ level, mood, onInteract }) => {
@@ -126,8 +124,8 @@ const KawaiiCompanions = ({ level, mood, onInteract }) => {
   );
 
   return (
-    <Card className="w-full max-w-md mx-auto overflow-hidden">
-      <CardContent className="p-6">
+    <div className="w-full max-w-md mx-auto overflow-hidden bg-white rounded-lg shadow">
+      <div className="p-6">
         <div className="relative w-full h-64">
           <svg viewBox="0 0 400 200" className="w-full h-full">
             <style>
@@ -150,11 +148,9 @@ const KawaiiCompanions = ({ level, mood, onInteract }) => {
         </div>
 
         {message && (
-          <Alert className="mt-4 bg-blue-50">
-            <AlertDescription className="text-center py-2">
-              {message}
-            </AlertDescription>
-          </Alert>
+          <div className="mt-4 bg-blue-50 p-4 rounded-lg">
+            <p className="text-center py-2">{message}</p>
+          </div>
         )}
 
         <div className="flex justify-center gap-2 mt-4">
@@ -168,8 +164,8 @@ const KawaiiCompanions = ({ level, mood, onInteract }) => {
             />
           ))}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 
