@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import KawaiiCompanions from './components/KawaiiCompanions';
 import LearningSystem from './components/LearningSystem';
-import { Card, CardContent } from '@/components/ui/card';
 
 function App() {
   const [currentView, setCurrentView] = useState('home');
