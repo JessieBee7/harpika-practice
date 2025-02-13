@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import React, { useState } from 'react';
 import { Music, BookOpen, Star, Clock } from 'lucide-react';
 
 const LearningSystem = () => {
@@ -62,8 +60,8 @@ const LearningSystem = () => {
 
   return (
     <div className="learning-system">
-      <Card className="mb-4">
-        <CardContent className="p-4">
+      <div className="bg-white rounded-lg shadow mb-4">
+        <div className="p-4">
           <h2 className="text-xl font-bold mb-4">Practice Dashboard</h2>
           <div className="grid grid-cols-2 gap-4">
             <div className="text-center p-4 bg-gray-50 rounded-lg">
@@ -77,11 +75,11 @@ const LearningSystem = () => {
               <div className="text-lg font-bold">2</div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      <Card className="mb-4">
-        <CardContent className="p-4">
+      <div className="bg-white rounded-lg shadow mb-4">
+        <div className="p-4">
           <h2 className="text-xl font-bold mb-4">Quick Start</h2>
           <div className="grid grid-cols-2 gap-4">
             <button 
@@ -99,13 +97,8 @@ const LearningSystem = () => {
               Song Library
             </button>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Additional features to be implemented */}
-      {/* - Tuner */}
-      {/* - Tab Creator */}
-      {/* - Quick Learn Mode */}
+        </div>
+      </div>
     </div>
   );
 };
