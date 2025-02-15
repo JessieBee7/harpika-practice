@@ -7,64 +7,26 @@ const LearningSystem = () => {
   const [selectedSong, setSelectedSong] = useState(null);
   const [practiceMinutes, setPracticeMinutes] = useState(0);
 
-  // Song library stays the same as before
-  const songLibrary = {
-    beginner: {
-      title: "Beginner Songs",
-      songs: [
-        {
-          title: "Basic Scale Practice",
-          difficulty: "Beginner",
-          description: "Practice moving up and down the scale",
-          tab: [
-            "Going up:",
-            "1  2  3  4  5  6  7",
-            "1°  2°  3°",
-            "",
-            "Coming down:",
-            "3°  2°  1°",
-            "7  6  5  4  3  2  1"
-          ]
-        },
-        {
-          title: "Simple Chords",
-          difficulty: "Beginner",
-          description: "Basic chord practice",
-          tab: [
-            "Major chords:",
-            "(1 3 5)    Rest    (1° 3° 5°)",
-            "",
-            "Practice slowly:",
-            "(1 3 5)  5  3  1"
-          ]
-        }
-      ]
-    },
-    // ... rest of the song library stays the same
-  };
-
-  const handleSongSelect = (song) => {
-    setSelectedSong(song);
-    setCurrentView('practice');
-  };
+  // Song library stays the same
 
   return (
-    <div className="learning-system">
+    <div className="learning-system space-y-6">
       {currentView === 'home' && (
         <>
-          <div className="bg-white rounded-lg shadow mb-4">
-            <div className="p-4">
-              <h2 className="text-xl font-bold mb-4">Practice Dashboard</h2>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <Clock className="w-8 h-8 mx-auto mb-2 text-blue-500" />
-                  <div className="text-sm text-gray-600">Practice Time</div>
-                  <div className="text-lg font-bold">{practiceMinutes} minutes</div>
+          {/* Dashboard Card */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl">
+            <div className="p-6">
+              <h2 className="text-2xl font-bold mb-6 text-gray-800">Practice Dashboard</h2>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="text-center p-6 bg-purple-50/50 rounded-xl backdrop-blur-sm transition-all duration-300 hover:bg-purple-50/80">
+                  <Clock className="w-12 h-12 mx-auto mb-3 text-purple-500" />
+                  <div className="text-sm text-gray-600 mb-1">Practice Time</div>
+                  <div className="text-2xl font-bold text-purple-700">{practiceMinutes} minutes</div>
                 </div>
-                <div className="text-center p-4 bg-gray-50 rounded-lg">
-                  <Music className="w-8 h-8 mx-auto mb-2 text-green-500" />
-                  <div className="text-sm text-gray-600">Songs Learning</div>
-                  <div className="text-lg font-bold">
+                <div className="text-center p-6 bg-pink-50/50 rounded-xl backdrop-blur-sm transition-all duration-300 hover:bg-pink-50/80">
+                  <Music className="w-12 h-12 mx-auto mb-3 text-pink-500" />
+                  <div className="text-sm text-gray-600 mb-1">Songs Learning</div>
+                  <div className="text-2xl font-bold text-pink-700">
                     {Object.values(songLibrary).reduce((total, category) => 
                       total + category.songs.length, 0
                     )}
@@ -74,23 +36,25 @@ const LearningSystem = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow">
-            <div className="p-4">
-              <h2 className="text-xl font-bold mb-4">Song Library</h2>
+          {/* Song Library */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg">
+            <div className="p-6">
+              <h2 className="text-2xl font-bold mb-6 text-gray-800">Song Library</h2>
               {Object.entries(songLibrary).map(([category, data]) => (
-                <div key={category} className="mb-6">
-                  <h3 className="text-lg font-semibold mb-2">{data.title}</h3>
-                  <div className="grid gap-2">
+                <div key={category} className="mb-8 last:mb-0">
+                  <h3 className="text-xl font-semibold mb-4 text-gray-700">{data.title}</h3>
+                  <div className="grid gap-4">
                     {data.songs.map((song, index) => (
                       <button
                         key={index}
-                        className="w-full text-left p-3 bg-gray-50 rounded hover:bg-gray-100"
+                        className="w-full text-left p-5 bg-purple-50/50 rounded-xl hover:bg-purple-50/80 
+                                 transition-all duration-300 transform hover:scale-[1.02] backdrop-blur-sm"
                         onClick={() => handleSongSelect(song)}
                       >
-                        <div className="font-medium">{song.title}</div>
-                        <div className="text-sm text-gray-600">{song.difficulty}</div>
+                        <div className="font-medium text-lg text-gray-800 mb-1">{song.title}</div>
+                        <div className="text-sm text-purple-600 mb-2">{song.difficulty}</div>
                         {song.description && (
-                          <div className="text-sm text-gray-500">{song.description}</div>
+                          <div className="text-sm text-gray-600">{song.description}</div>
                         )}
                       </button>
                     ))}
@@ -103,10 +67,12 @@ const LearningSystem = () => {
       )}
 
       {currentView === 'practice' && selectedSong && (
-        <Practice 
-          song={selectedSong}
-          onPracticeTime={(minutes) => setPracticeMinutes(prev => prev + minutes)}
-        />
+        <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6">
+          <Practice 
+            song={selectedSong}
+            onPracticeTime={(minutes) => setPracticeMinutes(prev => prev + minutes)}
+          />
+        </div>
       )}
     </div>
   );
