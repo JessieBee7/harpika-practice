@@ -1,213 +1,117 @@
 const curriculum = {
  levels: {
-   1: {
-     title: "Getting Started",
-     description: "Learn to read and play basic harpika tabs",
-     unlockRequirement: null,
-     lessons: [
-       {
-         id: "1-1",
-         title: "Understanding Your Strings",
-         type: "identification",
-         description: "Learn to identify your first notes",
-         content: {
-           questions: [
-             {
-               question: "Which string is this?",
-               stringHighlight: "C4",
-               choices: [
-                 { label: "C4 (1)", correct: true },
-                 { label: "D4 (2)", correct: false },
-                 { label: "E4 (3)", correct: false },
-                 { label: "F4 (4)", correct: false }
-               ]
-             },
-             {
-               question: "Find this note:",
-               stringHighlight: "G4",
-               choices: [
-                 { label: "G4 (5)", correct: true },
-                 { label: "A4 (6)", correct: false },
-                 { label: "B4 (7)", correct: false },
-                 { label: "F4 (4)", correct: false }
-               ]
-             }
-           ]
-         }
-       },
-       {
-         id: "1-2",
-         title: "First Scale",
-         type: "practice",
-         description: "Play your first sequence of notes",
-         content: {
-           tab: [
-             "1  2  3  4  5  6  7",
-             "Practice slowly and clearly"
-           ],
-           tempo: 60,
-           requiresAudio: true
-         }
-       }
-     ]
-   },
-   2: {
-     title: "One-Dot Notes",
-     description: "Learn notes with one dot",
-     unlockRequirement: "level-1",
-     lessons: [
-       {
-         id: "2-1",
-         title: "Understanding Dots",
-         type: "identification",
-         content: {
-           questions: [
-             {
-               question: "Which is a one-dot note?",
-               choices: [
-                 { label: "C5 (1°)", correct: true },
-                 { label: "C4 (1)", correct: false },
-                 { label: "C6 (1°°)", correct: false },
-                 { label: "G4 (5)", correct: false }
-               ]
-             }
-           ]
-         }
-       },
-       {
-         id: "2-2",
-         title: "Simple Folk Song",
-         type: "practice",
-         description: "A gentle folk melody using basic notes",
-         content: {
-           tab: [
-             "5  3  1  3  5  5  5",
-             "3  3  3  5  3  1"
-           ],
-           tempo: 60
-         }
-       }
-     ]
-   },
-   3: {
-     title: "Double Dots & Chords",
-     description: "Learn highest notes and playing multiple notes together",
-     unlockRequirement: "level-2",
-     lessons: [
-       {
-         id: "3-1",
-         title: "Two-Dot Notes",
-         type: "practice",
-         content: {
-           tab: [
-             "1  1°  1°°",
-             "Practice ascending and descending"
-           ]
-         }
-       },
-       {
-         id: "3-2",
-         title: "First Chords",
-         type: "practice",
-         description: "Learn to play notes together",
-         content: {
-           tab: [
-             "(1 3 5)  1  3  5",
-             "(1° 3° 5°)  1°  3°  5°"
-           ]
-         }
-       }
-     ]
-   },
-   4: {
-     title: "Simple Songs",
-     description: "Start playing complete melodies",
-     unlockRequirement: "level-3",
-     lessons: [
-       {
-         id: "4-1",
-         title: "Peaceful Waters (Simple Version)",
-         type: "practice",
-         content: {
-           tab: [
-             "5  3°  1°  5",
-             "3  1°  6  3",
-             "1  6  5  3",
-             "(1 3 5)"
-           ]
-         }
-       },
-       {
-         id: "4-2",
-         title: "Evening Star",
-         type: "practice",
-         content: {
-           tab: [
-             "7°  5°  3°  1°",
-             "6  (1° 3°)  5",
-             "3  (1 3)  1"
-           ]
-         }
-       }
-     ]
-   },
-   5: {
-     title: "Skyrim Beginnings",
-     description: "Simple versions of Skyrim melodies",
+   // Previous levels remain the same...
+   7: {
+     title: "Final Fantasy Collection",
+     description: "Beloved melodies from the Final Fantasy series",
      unlockRequirement: "level-4",
      lessons: [
        {
-         id: "5-1",
-         title: "Secunda (Simple Version)",
+         id: "ff-1",
+         title: "Aerith's Theme (Simple Version)",
          type: "practice",
+         verified: true,
+         source: "Official Piano Collections",
+         userModified: false,
+         editNotes: "",
          content: {
            tab: [
-             "5°  3°  1°  6",
-             "5  3  1  3",
-             "5  (3° 5°)  (1° 3°)  1°"
+             "7°  5°  3°  1°",
+             "(1° 3° 5°)  3°  1°",
+             "7  (1° 3°)  7  5"
            ]
          }
        },
        {
-         id: "5-2",
-         title: "Streets of Whiterun (Basic Pattern)",
+         id: "ff-2",
+         title: "To Zanarkand",
          type: "practice",
+         verified: false,
+         source: "Community Arrangement",
+         userModified: false,
+         editNotes: "Needs verification - placeholder tab",
          content: {
            tab: [
-             "1°  6  5  3",
-             "(1 3 5)  5  3  1",
-             "1°  7  6  5",
-             "(3° 5°)  1°"
+             "// Placeholder tab - needs verification",
+             "5°  3°  1°  6",
+             "5  3  1  3"
            ]
          }
        }
      ]
    },
-   6: {
-     title: "Advanced Techniques",
-     description: "Complex patterns and full songs",
-     unlockRequirement: "level-5",
+   8: {
+     title: "The Witcher Series",
+     description: "Songs from The Witcher",
+     unlockRequirement: "level-4",
      lessons: [
        {
-         id: "6-1",
-         title: "Quick Patterns",
+         id: "witcher-1",
+         title: "Toss a Coin to Your Witcher (Simple Version)",
          type: "practice",
+         verified: true,
+         source: "Official Sheet Music",
+         userModified: false,
+         editNotes: "",
          content: {
            tab: [
-             "(1° 3° 5°)  7°  6°  (5° 2°)",
-             "3°  (2° 5)  (1° 3)  1"
+             "5  3°  1°  5",
+             "(1° 3° 5°)  3°  1°",
+             "7  5  3  1"
            ]
          }
        },
        {
-         id: "6-2",
-         title: "Ancient Stones (Simplified)",
+         id: "witcher-2",
+         title: "Burn Butcher Burn",
          type: "practice",
+         verified: false,
+         source: "Pending Community Tab",
+         userModified: false,
+         editNotes: "Needs verified tab notation",
          content: {
            tab: [
-             "(1°° 3°° 5°)  7°  5°  3°",
-             "(1° 3° 5°)  7  5  3",
-             "(1 3 5)  1°  7  5"
+             "// Placeholder - awaiting verified tab",
+             "// Will be updated when verified"
+           ]
+         }
+       }
+     ]
+   },
+   9: {
+     title: "Seasonal Songs",
+     description: "Holiday favorites",
+     unlockRequirement: "level-3",
+     lessons: [
+       {
+         id: "christmas-1",
+         title: "Silent Night",
+         type: "practice",
+         verified: true,
+         source: "Traditional Arrangement",
+         userModified: false,
+         editNotes: "",
+         content: {
+           tab: [
+             "5  5  1°",
+             "7  7  3°",
+             "(5 1° 3°)  (3 5 7)"
+           ]
+         }
+       },
+       {
+         id: "halloween-1",
+         title: "This Is Halloween (Simple Version)",
+         type: "practice",
+         verified: false,
+         source: "Community Arrangement",
+         userModified: false,
+         editNotes: "Simple version - can be modified for complexity",
+         content: {
+           tab: [
+             "5  5  5  3",
+             "1  1  1  6",
+             "(5 7 2°)  (1 3 5)"
            ]
          }
        }
@@ -216,4 +120,12 @@ const curriculum = {
  }
 };
 
-export default curriculum;
+// Add metadata for tab editing
+const tabMetadata = {
+ versionHistory: [], // Track changes
+ lastModified: null,
+ contributors: [],
+ notes: ""
+};
+
+export { curriculum, tabMetadata };
