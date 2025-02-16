@@ -2,18 +2,18 @@ const curriculum = {
  levels: {
    1: {
      title: "Getting Started",
-     description: "Learn the basics of reading harpika tabs",
+     description: "Learn to read and play basic harpika tabs",
      unlockRequirement: null,
      lessons: [
        {
          id: "1-1",
-         title: "Your First Notes",
+         title: "Understanding Your Strings",
          type: "identification",
-         description: "Learn to identify the center strings",
+         description: "Learn to identify your first notes",
          content: {
            questions: [
              {
-               question: "Which string is highlighted?",
+               question: "Which string is this?",
                stringHighlight: "C4",
                choices: [
                  { label: "C4 (1)", correct: true },
@@ -24,12 +24,12 @@ const curriculum = {
              },
              {
                question: "Find this note:",
-               stringHighlight: "E4",
+               stringHighlight: "G4",
                choices: [
-                 { label: "E4 (3)", correct: true },
-                 { label: "G4 (5)", correct: false },
-                 { label: "F4 (4)", correct: false },
-                 { label: "D4 (2)", correct: false }
+                 { label: "G4 (5)", correct: true },
+                 { label: "A4 (6)", correct: false },
+                 { label: "B4 (7)", correct: false },
+                 { label: "F4 (4)", correct: false }
                ]
              }
            ]
@@ -37,26 +37,33 @@ const curriculum = {
        },
        {
          id: "1-2",
-         title: "Practice Simple Notes",
+         title: "First Scale",
          type: "practice",
-         description: "Play your first sequence",
+         description: "Play your first sequence of notes",
          content: {
-           tab: ["1", "2", "3"],
+           tab: [
+             "1  2  3  4  5  6  7",
+             "Practice slowly and clearly"
+           ],
            tempo: 60,
-           requiresAudio: true,
-           practiceNotes: "Play each note clearly and steadily"
+           requiresAudio: true
          }
-       },
+       }
+     ]
+   },
+   2: {
+     title: "One-Dot Notes",
+     description: "Learn notes with one dot",
+     unlockRequirement: "level-1",
+     lessons: [
        {
-         id: "1-3",
-         title: "One-Dot Notes",
+         id: "2-1",
+         title: "Understanding Dots",
          type: "identification",
-         description: "Learn notes with one dot",
          content: {
            questions: [
              {
-               question: "Which note has one dot?",
-               stringHighlight: "C5",
+               question: "Which is a one-dot note?",
                choices: [
                  { label: "C5 (1°)", correct: true },
                  { label: "C4 (1)", correct: false },
@@ -66,180 +73,145 @@ const curriculum = {
              }
            ]
          }
-       }
-     ],
-     achievement: {
-       title: "First Steps",
-       icon: "🎵",
-       description: "You can read your first tabs!"
-     }
-   },
-   2: {
-     title: "Single Dots",
-     description: "Master notes with one dot",
-     unlockRequirement: "level-1",
-     lessons: [
-       {
-         id: "2-1",
-         title: "Reading One-Dot Notes",
-         type: "identification",
-         content: {
-           questions: [
-             {
-               question: "Find this one-dot note:",
-               stringHighlight: "G5",
-               choices: [
-                 { label: "G5 (5°)", correct: true },
-                 { label: "G4 (5)", correct: false },
-                 { label: "A5 (6°)", correct: false },
-                 { label: "F5 (4°)", correct: false }
-               ]
-             }
-           ]
-         }
        },
        {
          id: "2-2",
-         title: "Practice with Dots",
+         title: "Simple Folk Song",
          type: "practice",
+         description: "A gentle folk melody using basic notes",
          content: {
-           tab: ["1", "3", "5", "3°", "1°"],
-           tempo: 60,
-           requiresAudio: true,
-           practiceNotes: "Notice how dot notes are higher pitched"
+           tab: [
+             "5  3  1  3  5  5  5",
+             "3  3  3  5  3  1"
+           ],
+           tempo: 60
          }
        }
-     ],
-     achievement: {
-       title: "Dot Master",
-       icon: "⭐",
-       description: "You've mastered single-dot notes!"
-     }
+     ]
    },
    3: {
-     title: "Double Dots",
-     description: "Learn the highest notes",
+     title: "Double Dots & Chords",
+     description: "Learn highest notes and playing multiple notes together",
      unlockRequirement: "level-2",
      lessons: [
        {
          id: "3-1",
-         title: "Double-Dot Introduction",
-         type: "identification",
+         title: "Two-Dot Notes",
+         type: "practice",
          content: {
-           questions: [
-             {
-               question: "Which note has two dots?",
-               stringHighlight: "D6",
-               choices: [
-                 { label: "D6 (2°°)", correct: true },
-                 { label: "D5 (2°)", correct: false },
-                 { label: "D4 (2)", correct: false },
-                 { label: "E6 (3°°)", correct: false }
-               ]
-             }
+           tab: [
+             "1  1°  1°°",
+             "Practice ascending and descending"
            ]
          }
        },
        {
          id: "3-2",
-         title: "High Note Practice",
+         title: "First Chords",
          type: "practice",
+         description: "Learn to play notes together",
          content: {
-           tab: ["1", "1°", "1°°", "1°", "1"],
-           tempo: 60,
-           requiresAudio: true,
-           practiceNotes: "Try to hear the ascending pitch"
+           tab: [
+             "(1 3 5)  1  3  5",
+             "(1° 3° 5°)  1°  3°  5°"
+           ]
          }
        }
      ]
    },
    4: {
-     title: "Simple Chords",
-     description: "Learn to read and play multiple notes together",
+     title: "Simple Songs",
+     description: "Start playing complete melodies",
      unlockRequirement: "level-3",
      lessons: [
        {
          id: "4-1",
-         title: "Reading Chords",
-         type: "identification",
+         title: "Peaceful Waters (Simple Version)",
+         type: "practice",
          content: {
-           questions: [
-             {
-               question: "What does this chord notation mean?",
-               display: "(1 3 5)",
-               choices: [
-                 { label: "Play 1, 3, and 5 together", correct: true },
-                 { label: "Play 1, then 3, then 5", correct: false },
-                 { label: "Play either 1, 3, or 5", correct: false },
-                 { label: "Repeat 1, 3, 5 three times", correct: false }
-               ]
-             }
+           tab: [
+             "5  3°  1°  5",
+             "3  1°  6  3",
+             "1  6  5  3",
+             "(1 3 5)"
            ]
          }
        },
        {
          id: "4-2",
-         title: "First Chord Practice",
+         title: "Evening Star",
          type: "practice",
          content: {
-           tab: ["(1 3 5)", "1", "3", "5", "(1 3 5)"],
-           tempo: 50,
-           requiresAudio: true,
-           practiceNotes: "Take your time with the chords"
+           tab: [
+             "7°  5°  3°  1°",
+             "6  (1° 3°)  5",
+             "3  (1 3)  1"
+           ]
          }
        }
      ]
    },
    5: {
-     title: "Combining Skills",
-     description: "Mix chords with single and dotted notes",
+     title: "Skyrim Beginnings",
+     description: "Simple versions of Skyrim melodies",
      unlockRequirement: "level-4",
      lessons: [
        {
          id: "5-1",
-         title: "Mixed Note Reading",
-         type: "identification",
+         title: "Secunda (Simple Version)",
+         type: "practice",
          content: {
-           questions: [
-             {
-               question: "What's this combination?",
-               display: "(1° 3° 5°)",
-               choices: [
-                 { label: "Play 1°, 3°, and 5° together", correct: true },
-                 { label: "Play 1°, then 3°, then 5°", correct: false },
-                 { label: "Three different one-dot notes", correct: false },
-                 { label: "A high chord", correct: false }
-               ]
-             }
+           tab: [
+             "5°  3°  1°  6",
+             "5  3  1  3",
+             "5  (3° 5°)  (1° 3°)  1°"
            ]
          }
        },
        {
          id: "5-2",
-         title: "Advanced Practice",
+         title: "Streets of Whiterun (Basic Pattern)",
          type: "practice",
          content: {
            tab: [
-             "(1 3 5)",
-             "7",
-             "6",
-             "(5° 2°)",
-             "3°",
-             "(2° 5)",
-             "(1° 3)",
-             "1"
-           ],
-           tempo: 60,
-           requiresAudio: true,
-           practiceNotes: "Focus on clean transitions between notes and chords"
+             "1°  6  5  3",
+             "(1 3 5)  5  3  1",
+             "1°  7  6  5",
+             "(3° 5°)  1°"
+           ]
          }
        }
-     ],
-     achievement: {
-       title: "Tab Master",
-       icon: "🏆",
-       description: "You can read and play complex tab patterns!"
-     }
+     ]
+   },
+   6: {
+     title: "Advanced Techniques",
+     description: "Complex patterns and full songs",
+     unlockRequirement: "level-5",
+     lessons: [
+       {
+         id: "6-1",
+         title: "Quick Patterns",
+         type: "practice",
+         content: {
+           tab: [
+             "(1° 3° 5°)  7°  6°  (5° 2°)",
+             "3°  (2° 5)  (1° 3)  1"
+           ]
+         }
+       },
+       {
+         id: "6-2",
+         title: "Ancient Stones (Simplified)",
+         type: "practice",
+         content: {
+           tab: [
+             "(1°° 3°° 5°)  7°  5°  3°",
+             "(1° 3° 5°)  7  5  3",
+             "(1 3 5)  1°  7  5"
+           ]
+         }
+       }
+     ]
    }
  }
 };
