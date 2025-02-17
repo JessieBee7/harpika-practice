@@ -1,9 +1,9 @@
-// Update App.js
 import React, { useState, useEffect } from 'react';
 import KawaiiCompanions from './components/KawaiiCompanions';
 import ReferenceGuide from './components/ReferenceGuide';
 import BackgroundTheme from './components/BackgroundTheme';
 import LearningHub from './components/LearningHub';
+import BackupIndicator from './components/BackupIndicator';
 import BackupSystem from './utils/backupSystem';
 
 function App() {
@@ -20,18 +20,7 @@ function App() {
 
     // Clean old backups on startup
     BackupSystem.clearOldBackups();
-
-    // Update last backup time
-    const history = BackupSystem.getBackupHistory();
-    if (history.length > 0) {
-      setLastBackupTime(history[0].timestamp);
-    }
   }, []);
-
-  // Update backup time when new backups are created
-  const handleBackupUpdate = (timestamp) => {
-    setLastBackupTime(timestamp);
-  };
 
   return (
     <div className="min-h-screen">
@@ -39,14 +28,47 @@ function App() {
       
       <div className="relative z-10 p-4">
         <div className="max-w-6xl mx-auto">
-          {/* Header and navigation remain the same */}
+          {/* Header with Backup Indicator */}
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-4xl font-bold text-gray-800 dark:text-white">
+              Harpika Practice Companion
+            </h1>
+            <BackupIndicator className="mt-1" />
+          </div>
           
-          {/* Optional: Display last backup time */}
-          {lastBackupTime && (
-            <div className="text-xs text-gray-500 text-right mb-2">
-              Last backup: {new Date(lastBackupTime).toLocaleString()}
-            </div>
-          )}
+          {/* Navigation */}
+          <div className="flex gap-3 mb-6 justify-center">
+            <button 
+              onClick={() => setCurrentView('home')}
+              className={`px-6 py-3 rounded-lg transition-all duration-200 ${
+                currentView === 'home' 
+                  ? 'bg-purple-100 text-purple-700 shadow-md' 
+                  : 'bg-white/80 hover:bg-purple-50'
+              }`}
+            >
+              Home
+            </button>
+            <button 
+              onClick={() => setCurrentView('learn')}
+              className={`px-6 py-3 rounded-lg transition-all duration-200 ${
+                currentView === 'learn' 
+                  ? 'bg-purple-100 text-purple-700 shadow-md' 
+                  : 'bg-white/80 hover:bg-purple-50'
+              }`}
+            >
+              Learn
+            </button>
+            <button 
+              onClick={() => setCurrentView('reference')}
+              className={`px-6 py-3 rounded-lg transition-all duration-200 ${
+                currentView === 'reference' 
+                  ? 'bg-purple-100 text-purple-700 shadow-md' 
+                  : 'bg-white/80 hover:bg-purple-50'
+              }`}
+            >
+              Reference Guide
+            </button>
+          </div>
 
           {/* Content */}
           <div className="space-y-6">
@@ -72,7 +94,7 @@ function App() {
 
             {currentView === 'learn' && (
               <div className="bg-white/90 rounded-lg shadow-lg backdrop-blur-sm">
-                <LearningHub onBackupUpdate={handleBackupUpdate} />
+                <LearningHub />
               </div>
             )}
 
