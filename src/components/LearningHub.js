@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PracticeSession from './PracticeSession';
-import curriculum from '../data/curriculum';
-import { BookOpen, Star, ArrowRight, Lock } from 'lucide-react';
+import { curriculum, tabMetadata } from '../data/curriculum';
+import { BookOpen, Star, ArrowRight, Lock, Edit2 } from 'lucide-react';
 
 const LearningHub = () => {
  const [currentLevel, setCurrentLevel] = useState(1);
@@ -11,64 +11,38 @@ const LearningHub = () => {
    lessons: {},
    achievements: []
  });
+ const [modifiedSongs, setModifiedSongs] = useState({});
 
- // Check if level is unlocked
- const isLevelUnlocked = (levelNum) => {
-   return userProgress.levels[levelNum]?.unlocked || levelNum === 1;
- };
-
- // Check if lesson is completed
- const isLessonCompleted = (lessonId) => {
-   return userProgress.lessons[lessonId]?.completed;
- };
-
- // Handle level selection
- const handleLevelSelect = (level) => {
-   if (isLevelUnlocked(level)) {
-     setCurrentLevel(level);
-     setCurrentLesson(null);
-   }
- };
-
- // Handle lesson selection
- const handleLessonSelect = (lesson) => {
-   setCurrentLesson(lesson);
- };
-
- // Handle progress update
- const handleProgress = ({ lessonCompleted, levelProgress }) => {
-   if (lessonCompleted && currentLesson) {
-     const newProgress = {
-       ...userProgress,
-       lessons: {
-         ...userProgress.lessons,
-         [currentLesson.id]: { completed: true }
-       }
-     };
-
-     // Check if level is completed
-     const levelLessons = curriculum.levels[currentLevel].lessons;
-     const allLessonsCompleted = levelLessons.every(
-       lesson => newProgress.lessons[lesson.id]?.completed
-     );
-
-     if (allLessonsCompleted) {
-       newProgress.levels[currentLevel + 1] = { unlocked: true };
-     }
-
-     setUserProgress(newProgress);
-     // Save progress to localStorage
-     localStorage.setItem('harpikaProgress', JSON.stringify(newProgress));
-   }
- };
-
- // Load saved progress
+ // Load saved progress and modifications
  useEffect(() => {
    const savedProgress = localStorage.getItem('harpikaProgress');
+   const savedModifications = localStorage.getItem('harpikaSongModifications');
    if (savedProgress) {
      setUserProgress(JSON.parse(savedProgress));
    }
+   if (savedModifications) {
+     setModifiedSongs(JSON.parse(savedModifications));
+   }
  }, []);
+
+ // Handle song modifications
+ const handleSongUpdate = (updatedSong) => {
+   const newModifications = {
+     ...modifiedSongs,
+     [updatedSong.id]: {
+       ...updatedSong,
+       lastModified: new Date().toISOString(),
+       userModified: true
+     }
+   };
+   setModifiedSongs(newModifications);
+   localStorage.setItem('harpikaSongModifications', JSON.stringify(newModifications));
+ };
+
+ // Get song with any user modifications
+ const getSongWithModifications = (song) => {
+   return modifiedSongs[song.id] || song;
+ };
 
  // Render level selection
  const renderLevelSelection = () => (
@@ -101,7 +75,7 @@ const LearningHub = () => {
    </div>
  );
 
- // Render lesson selection
+ // Render lesson selection with modification indicators
  const renderLessonSelection = () => {
    const currentLevelData = curriculum.levels[currentLevel];
    if (!currentLevelData) return null;
@@ -119,31 +93,44 @@ const LearningHub = () => {
        </div>
        
        <div className="grid gap-4">
-         {currentLevelData.lessons.map((lesson, index) => (
-           <button
-             key={lesson.id}
-             onClick={() => handleLessonSelect(lesson)}
-             className={`p-4 rounded-lg text-left transition-all ${
-               isLessonCompleted(lesson.id)
-                 ? 'bg-green-50 hover:bg-green-100'
-                 : 'bg-white hover:bg-purple-50'
-             }`}
-           >
-             <div className="flex items-center justify-between">
-               <div>
-                 <h3 className="font-bold">{lesson.title}</h3>
-                 <p className="text-sm text-gray-600 mt-1">
-                   {lesson.description}
-                 </p>
+         {currentLevelData.lessons.map((lesson) => {
+           const modifiedLesson = getSongWithModifications(lesson);
+           return (
+             <button
+               key={lesson.id}
+               onClick={() => handleLessonSelect(modifiedLesson)}
+               className={`p-4 rounded-lg text-left transition-all ${
+                 isLessonCompleted(lesson.id)
+                   ? 'bg-green-50 hover:bg-green-100'
+                   : 'bg-white hover:bg-purple-50'
+               }`}
+             >
+               <div className="flex items-center justify-between">
+                 <div>
+                   <div className="flex items-center gap-2">
+                     <h3 className="font-bold">{lesson.title}</h3>
+                     {modifiedLesson.userModified && (
+                       <Edit2 className="w-4 h-4 text-purple-500" />
+                     )}
+                   </div>
+                   <p className="text-sm text-gray-600 mt-1">
+                     {lesson.description}
+                   </p>
+                   {modifiedLesson.userModified && (
+                     <p className="text-xs text-purple-600 mt-1">
+                       Modified: {new Date(modifiedLesson.lastModified).toLocaleDateString()}
+                     </p>
+                   )}
+                 </div>
+                 {isLessonCompleted(lesson.id) ? (
+                   <Star className="w-5 h-5 text-yellow-400" />
+                 ) : (
+                   <ArrowRight className="w-5 h-5 text-purple-400" />
+                 )}
                </div>
-               {isLessonCompleted(lesson.id) ? (
-                 <Star className="w-5 h-5 text-yellow-400" />
-               ) : (
-                 <ArrowRight className="w-5 h-5 text-purple-400" />
-               )}
-             </div>
-           </button>
-         ))}
+             </button>
+           );
+         })}
        </div>
      </div>
    );
@@ -157,6 +144,7 @@ const LearningHub = () => {
        <PracticeSession
          lessonData={currentLesson}
          onProgress={handleProgress}
+         onSongUpdate={handleSongUpdate}
          currentLevel={currentLevel}
        />
      )}
