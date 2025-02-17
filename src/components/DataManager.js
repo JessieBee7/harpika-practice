@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
-import { Download, Upload, RefreshCw, Save, AlertCircle } from 'lucide-react';
+// Updated DataManager.js
+import React, { useState, useEffect } from 'react';
+import { Download, Upload, RefreshCw, Save, AlertCircle, Clock } from 'lucide-react';
 import StorageUtils from '../utils/storage';
+import BackupSystem from '../utils/backupSystem';
 
 const DataManager = ({ onDataChange }) => {
  const [message, setMessage] = useState(null);
  const [isProcessing, setIsProcessing] = useState(false);
+ const [backupHistory, setBackupHistory] = useState([]);
+ const [lastBackup, setLastBackup] = useState(null);
+
+ // Load backup info on mount
+ useEffect(() => {
+   const history = BackupSystem.getBackupHistory();
+   setBackupHistory(history);
+   setLastBackup(history[0]); // Most recent backup
+ }, []);
 
  // Show feedback message
  const showMessage = (text, type = 'info') => {
@@ -12,11 +23,14 @@ const DataManager = ({ onDataChange }) => {
    setTimeout(() => setMessage(null), 3000);
  };
 
- // Handle backup creation
+ // Handle manual backup
  const handleCreateBackup = async () => {
    setIsProcessing(true);
-   const success = await StorageUtils.createBackup();
+   const success = await BackupSystem.createBackup(false); // manual backup
    if (success) {
+     const newHistory = BackupSystem.getBackupHistory();
+     setBackupHistory(newHistory);
+     setLastBackup(newHistory[0]);
      showMessage('Backup created successfully!', 'success');
    } else {
      showMessage('Failed to create backup', 'error');
@@ -24,43 +38,11 @@ const DataManager = ({ onDataChange }) => {
    setIsProcessing(false);
  };
 
- // Handle data export
- const handleExport = async () => {
-   setIsProcessing(true);
-   const success = await StorageUtils.exportUserData();
-   if (success) {
-     showMessage('Data exported successfully!', 'success');
-   } else {
-     showMessage('Failed to export data', 'error');
-   }
-   setIsProcessing(false);
- };
-
- // Handle data import
- const handleImport = async (event) => {
-   const file = event.target.files[0];
-   if (file) {
-     setIsProcessing(true);
-     try {
-       const success = await StorageUtils.importUserData(file);
-       if (success) {
-         showMessage('Data imported successfully!', 'success');
-         onDataChange && onDataChange();
-       } else {
-         showMessage('Failed to import data', 'error');
-       }
-     } catch (error) {
-       showMessage('Invalid data file', 'error');
-     }
-     setIsProcessing(false);
-   }
- };
-
- // Handle restore from backup
+ // Handle restore
  const handleRestore = async () => {
    if (window.confirm('Restore from latest backup? Current progress will be replaced.')) {
      setIsProcessing(true);
-     const success = await StorageUtils.restoreFromBackup();
+     const success = await BackupSystem.restoreFromBackup('manual');
      if (success) {
        showMessage('Restored from backup successfully!', 'success');
        onDataChange && onDataChange();
@@ -71,25 +53,35 @@ const DataManager = ({ onDataChange }) => {
    }
  };
 
- // Handle reset
- const handleReset = async () => {
-   if (window.confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
-     setIsProcessing(true);
-     const success = await StorageUtils.clearAllData();
-     if (success) {
-       showMessage('Progress reset successfully', 'success');
-       onDataChange && onDataChange();
-     } else {
-       showMessage('Failed to reset progress', 'error');
-     }
-     setIsProcessing(false);
+ // Handle backup export
+ const handleExportBackup = async () => {
+   setIsProcessing(true);
+   const success = await BackupSystem.exportBackup();
+   if (success) {
+     showMessage('Backup exported successfully!', 'success');
+   } else {
+     showMessage('Failed to export backup', 'error');
    }
+   setIsProcessing(false);
  };
 
  return (
    <div className="bg-white rounded-lg shadow-lg p-6">
      <h3 className="text-lg font-bold mb-4">Data Management</h3>
      
+     {/* Last Backup Info */}
+     {lastBackup && (
+       <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+         <div className="flex items-center gap-2 text-sm text-gray-600">
+           <Clock className="w-4 h-4" />
+           Last backup: {new Date(lastBackup.timestamp).toLocaleString()}
+           <span className="text-xs bg-gray-200 px-2 py-1 rounded">
+             {lastBackup.type}
+           </span>
+         </div>
+       </div>
+     )}
+
      <div className="grid grid-cols-2 gap-4 mb-6">
        {/* Backup & Restore */}
        <div className="space-y-2">
@@ -114,38 +106,32 @@ const DataManager = ({ onDataChange }) => {
        {/* Export & Import */}
        <div className="space-y-2">
          <button
-           onClick={handleExport}
+           onClick={handleExportBackup}
            disabled={isProcessing}
            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 disabled:opacity-50"
          >
            <Download className="w-4 h-4" />
-           Export Data
+           Export Backup
          </button>
-         <label className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-yellow-100 text-yellow-700 rounded-lg hover:bg-yellow-200 cursor-pointer disabled:opacity-50">
-           <Upload className="w-4 h-4" />
-           Import Data
-           <input
-             type="file"
-             accept=".json"
-             onChange={handleImport}
-             disabled={isProcessing}
-             className="hidden"
-           />
-         </label>
        </div>
      </div>
 
-     {/* Reset Button */}
-     <div className="border-t pt-4">
-       <button
-         onClick={handleReset}
-         disabled={isProcessing}
-         className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 disabled:opacity-50"
-       >
-         <AlertCircle className="w-4 h-4" />
-         Reset All Progress
-       </button>
-     </div>
+     {/* Backup History */}
+     {backupHistory.length > 0 && (
+       <div className="mt-4 border-t pt-4">
+         <h4 className="font-medium mb-2">Backup History</h4>
+         <div className="space-y-2 max-h-40 overflow-y-auto">
+           {backupHistory.map((backup, index) => (
+             <div key={index} className="text-sm flex items-center justify-between p-2 bg-gray-50 rounded">
+               <span>{new Date(backup.timestamp).toLocaleString()}</span>
+               <span className="text-xs bg-gray-200 px-2 py-1 rounded">
+                 {backup.type}
+               </span>
+             </div>
+           ))}
+         </div>
+       </div>
+     )}
 
      {/* Message Display */}
      {message && (
