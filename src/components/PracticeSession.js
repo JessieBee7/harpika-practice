@@ -1,121 +1,125 @@
 import React, { useState, useEffect } from 'react';
-import Practice from './Practice';
-import KawaiiCompanions from './KawaiiCompanions';
-import { Star, Medal } from 'lucide-react';
+import { Play, Pause, RotateCcw, Volume2, Edit } from 'lucide-react';
+import AudioDetector from './AudioDetector';
+import TabEditor from './TabEditor';
 
-const PracticeSession = ({ lessonData, onProgress, currentLevel }) => {
- const [practiceState, setPracticeState] = useState('ready'); // ready, practicing, success, completed
- const [characterMood, setCharacterMood] = useState('happy');
- const [encouragement, setEncouragement] = useState(null);
- const [achievements, setAchievements] = useState([]);
+const Practice = ({ song, onComplete, onSongUpdate }) => {
+ const [isPlaying, setIsPlaying] = useState(false);
+ const [tempo, setTempo] = useState(60);
+ const [currentNoteIndex, setCurrentNoteIndex] = useState(0);
+ const [feedback, setFeedback] = useState(null);
+ const [isListening, setIsListening] = useState(false);
+ const [showEditor, setShowEditor] = useState(false);
 
- // Character reactions based on practice events
- const characterReactions = {
-   correctNote: [
-     "That's it! Keep going! 🎵",
-     "Beautiful note! ✨",
-     "You're getting it! 🌟",
-     "Perfect! Next note! 🎼"
-   ],
-   streak: [
-     "Amazing streak! 🎵✨",
-     "You're on fire! 🔥",
-     "Keep that rhythm going! 🎼"
-   ],
-   completion: [
-     "You did it! 🎉",
-     "What a performance! 🌟",
-     "That was beautiful! ✨"
-   ]
- };
-
- // Handle note detection success
- const handleNoteSuccess = () => {
-   // Choose random encouragement
-   const messages = characterReactions.correctNote;
-   const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-   setEncouragement(randomMessage);
-   setCharacterMood('excited');
-
-   // Reset character mood after a delay
-   setTimeout(() => {
-     setCharacterMood('happy');
-     setEncouragement(null);
-   }, 2000);
- };
-
- // Handle practice completion
- const handlePracticeComplete = () => {
-   setPracticeState('completed');
-   setCharacterMood('excited');
-   const message = characterReactions.completion[
-     Math.floor(Math.random() * characterReactions.completion.length)
-   ];
-   setEncouragement(message);
-
-   // Update progress
-   onProgress({
-     lessonCompleted: true,
-     levelProgress: currentLevel
-   });
+ // Handle song update from editor
+ const handleSongEdit = (updatedSong) => {
+   onSongUpdate(updatedSong);
+   setShowEditor(false);
  };
 
  return (
-   <div className="space-y-6">
-     {/* Character Display */}
-     <div className="relative">
-       <KawaiiCompanions 
-         mood={characterMood}
-         level={currentLevel}
-       />
-       
-       {/* Encouragement Bubble */}
-       {encouragement && (
-         <div className="absolute top-0 right-0 transform translate-x-1/4 -translate-y-1/4
-                       bg-white rounded-xl p-4 shadow-lg animate-bounce">
-           <p className="text-lg">{encouragement}</p>
+   <div className="space-y-6 p-6 bg-white rounded-xl shadow-lg">
+     <div className="flex justify-between items-center">
+       <h2 className="text-xl font-bold">{song?.title || 'Practice'}</h2>
+       <div className="flex items-center gap-4">
+         {/* Tempo control */}
+         <div className="flex items-center gap-2">
+           <span className="text-sm">Tempo:</span>
+           <input
+             type="range"
+             min="40"
+             max="120"
+             value={tempo}
+             onChange={(e) => setTempo(Number(e.target.value))}
+             className="w-32"
+           />
+           <span className="text-sm w-12">{tempo} BPM</span>
          </div>
-       )}
+         
+         {/* Edit button */}
+         <button
+           onClick={() => setShowEditor(!showEditor)}
+           className="p-2 rounded-full bg-purple-100 hover:bg-purple-200"
+         >
+           <Edit className="w-5 h-5 text-purple-700" />
+         </button>
+
+         {/* Play/Stop button */}
+         <button
+           onClick={() => setIsListening(!isListening)}
+           className={`p-3 rounded-full ${
+             isListening ? 'bg-red-100' : 'bg-green-100'
+           }`}
+         >
+           {isListening ? 
+             <Pause className="w-6 h-6" /> : 
+             <Play className="w-6 h-6" />
+           }
+         </button>
+       </div>
      </div>
 
-     {/* Practice Interface */}
-     <Practice
-       song={lessonData.content}
-       onNoteSuccess={handleNoteSuccess}
-       onComplete={handlePracticeComplete}
-     />
-
-     {/* Achievement Display */}
-     {achievements.length > 0 && (
-       <div className="mt-4 p-4 bg-yellow-50 rounded-lg">
-         <h3 className="font-bold text-lg mb-2 flex items-center gap-2">
-           <Medal className="w-5 h-5 text-yellow-500" />
-           Achievements
-         </h3>
-         <div className="space-y-2">
-           {achievements.map((achievement, index) => (
-             <div key={index} className="flex items-center gap-2">
-               <Star className="w-4 h-4 text-yellow-500" />
-               <span>{achievement}</span>
-             </div>
-           ))}
-         </div>
+     {/* Tab Editor */}
+     {showEditor && (
+       <div className="mt-4">
+         <TabEditor 
+           song={song}
+           onSave={handleSongEdit}
+         />
        </div>
      )}
 
-     {/* Progress Status */}
-     <div className="text-center text-sm text-gray-600">
-       {practiceState === 'ready' && "Ready to practice!"}
-       {practiceState === 'practicing' && "Keep going, you're doing great!"}
-       {practiceState === 'completed' && (
-         <div className="bg-green-50 p-4 rounded-lg">
-           <p className="text-green-700 font-bold">Lesson Completed! 🎉</p>
-           <p className="mt-2">Ready for the next challenge?</p>
+     {/* Practice Interface (show when not editing) */}
+     {!showEditor && (
+       <>
+         {/* Tab display */}
+         <div className="font-mono text-lg bg-purple-50 p-4 rounded-lg overflow-x-auto whitespace-nowrap">
+           {song?.content.tab.map((line, index) => (
+             <div key={index} className="mb-1">
+               {line}
+             </div>
+           ))}
          </div>
-       )}
-     </div>
+
+         {/* Current note display */}
+         <div className="text-center p-4 bg-purple-50 rounded-lg">
+           <div className="text-sm text-gray-600">Current Note</div>
+           <div className="text-3xl font-bold text-purple-700">
+             {song?.content.tab[currentNoteIndex]}
+           </div>
+         </div>
+
+         {/* Audio detector */}
+         <AudioDetector 
+           isListening={isListening}
+           onNoteDetected={handleNoteDetected}
+         />
+
+         {/* Feedback display */}
+         {feedback && (
+           <div className={`p-4 rounded-lg text-center ${
+             feedback.type === 'success' 
+               ? 'bg-green-100 text-green-700'
+               : 'bg-red-100 text-red-700'
+           }`}>
+             {feedback.message}
+           </div>
+         )}
+
+         {/* Practice tips */}
+         <div className="mt-6">
+           <h3 className="font-medium mb-2">Tips:</h3>
+           <ul className="text-sm text-gray-600 space-y-1">
+             <li>• Play at a comfortable tempo</li>
+             <li>• Focus on accuracy before speed</li>
+             <li>• Make sure each note is clear</li>
+             <li>• Watch for dots in the notation</li>
+           </ul>
+         </div>
+       </>
+     )}
    </div>
  );
 };
 
-export default PracticeSession;
+export default Practice;
