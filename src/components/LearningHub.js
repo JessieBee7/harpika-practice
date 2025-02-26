@@ -1,75 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PracticeSession from './PracticeSession';
 import { curriculum } from '../data/curriculum';
-import StorageUtils from '../utils/storage';
-import { BookOpen, Star, ArrowRight, Lock } from 'lucide-react';
+import { BookOpen, Star, ArrowRight } from 'lucide-react';
 
 const LearningHub = () => {
-  const [currentLevel, setCurrentLevel] = useState(1);
+  const [currentLevel, setCurrentLevel] = useState(null);
   const [currentLesson, setCurrentLesson] = useState(null);
-  const [userProgress, setUserProgress] = useState({
-    levels: { 1: { unlocked: true } },
-    lessons: {},
-    achievements: []
-  });
-
-  // Load saved progress
-  useEffect(() => {
-    const savedProgress = StorageUtils.loadProgress();
-    if (savedProgress) {
-      setUserProgress(savedProgress);
-    }
-  }, []);
-
-  // Check if level is unlocked
-  const isLevelUnlocked = (levelNum) => {
-    // Check if level is force unlocked in curriculum
-    const level = curriculum.levels[levelNum];
-    if (level && level.forceUnlock) {
-      return true;
-    }
-    
-    // Otherwise check progress
-    return userProgress.levels[levelNum]?.unlocked || levelNum === 1;
-  };
-
-  // Check if lesson is completed
-  const isLessonCompleted = (lessonId) => {
-    return userProgress.lessons[lessonId]?.completed;
-  };
 
   // Handle level selection
   const handleLevelSelect = (level) => {
-    if (isLevelUnlocked(level)) {
-      setCurrentLevel(level);
-      setCurrentLesson(null);
-    }
+    setCurrentLevel(level);
+    setCurrentLesson(null);
   };
 
   // Handle lesson selection
   const handleLessonSelect = (lesson) => {
     setCurrentLesson(lesson);
-  };
-
-  // Handle progress update
-  const handleProgress = (progressData) => {
-    const newProgress = {
-      ...userProgress,
-      lessons: {
-        ...userProgress.lessons,
-        [progressData.lessonId]: {
-          completed: true,
-          lastPracticed: new Date().toISOString()
-        }
-      }
-    };
-
-    if (progressData.levelCompleted) {
-      newProgress.levels[progressData.level + 1] = { unlocked: true };
-    }
-
-    StorageUtils.saveProgress(newProgress);
-    setUserProgress(newProgress);
   };
 
   // Render level selection
@@ -79,19 +25,11 @@ const LearningHub = () => {
         <button
           key={levelNum}
           onClick={() => handleLevelSelect(Number(levelNum))}
-          className={`p-6 rounded-xl text-left transition-all ${
-            isLevelUnlocked(Number(levelNum))
-              ? 'bg-white hover:bg-purple-50'
-              : 'bg-gray-100 cursor-not-allowed'
-          }`}
-          disabled={!isLevelUnlocked(Number(levelNum))}
+          className="p-6 rounded-xl text-left transition-all bg-white hover:bg-purple-50"
         >
           <div className="flex justify-between items-start">
             <h3 className="text-lg font-bold">{level.title}</h3>
-            {isLevelUnlocked(Number(levelNum)) 
-              ? <Star className="w-5 h-5 text-yellow-400" />
-              : <Lock className="w-5 h-5 text-gray-400" />
-            }
+            <Star className="w-5 h-5 text-yellow-400" />
           </div>
           <p className="text-sm text-gray-600 mt-2">{level.description}</p>
           <div className="mt-4 flex items-center gap-2">
@@ -125,11 +63,7 @@ const LearningHub = () => {
             <button
               key={lesson.id}
               onClick={() => handleLessonSelect(lesson)}
-              className={`p-4 rounded-lg text-left transition-all ${
-                isLessonCompleted(lesson.id)
-                  ? 'bg-green-50 hover:bg-green-100'
-                  : 'bg-white hover:bg-purple-50'
-              }`}
+              className="p-4 rounded-lg text-left transition-all bg-white hover:bg-purple-50"
             >
               <div className="flex items-center justify-between">
                 <div>
@@ -138,11 +72,7 @@ const LearningHub = () => {
                     {lesson.description}
                   </p>
                 </div>
-                {isLessonCompleted(lesson.id) ? (
-                  <Star className="w-5 h-5 text-yellow-400" />
-                ) : (
-                  <ArrowRight className="w-5 h-5 text-purple-400" />
-                )}
+                <ArrowRight className="w-5 h-5 text-purple-400" />
               </div>
             </button>
           ))}
@@ -158,7 +88,6 @@ const LearningHub = () => {
       {currentLesson && (
         <PracticeSession
           lessonData={currentLesson}
-          onProgress={handleProgress}
           currentLevel={currentLevel}
         />
       )}
