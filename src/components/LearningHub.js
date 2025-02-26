@@ -5,7 +5,7 @@ import StorageUtils from '../utils/storage';
 import { BookOpen, Star, ArrowRight, Lock } from 'lucide-react';
 
 const LearningHub = () => {
-  const [currentLevel, setCurrentLevel] = useState(null);
+  const [currentLevel, setCurrentLevel] = useState(1); // Changed from null to 1
   const [currentLesson, setCurrentLesson] = useState(null);
   const [userProgress, setUserProgress] = useState({
     levels: { 1: { unlocked: true } },
@@ -132,31 +132,4 @@ const LearningHub = () => {
                   </p>
                 </div>
                 {isLessonCompleted(lesson.id) ? (
-                  <Star className="w-5 h-5 text-yellow-400" />
-                ) : (
-                  <ArrowRight className="w-5 h-5 text-purple-400" />
-                )}
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  return (
-    <div className="space-y-8">
-      {!currentLesson && !currentLevel && renderLevelSelection()}
-      {!currentLesson && currentLevel && renderLessonSelection()}
-      {currentLesson && (
-        <PracticeSession
-          lessonData={currentLesson}
-          onProgress={handleProgress}
-          currentLevel={currentLevel}
-        />
-      )}
-    </div>
-  );
-};
-
-export default LearningHub;
+                  <Star className="
