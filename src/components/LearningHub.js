@@ -5,7 +5,7 @@ import StorageUtils from '../utils/storage';
 import { BookOpen, Star, ArrowRight, Lock } from 'lucide-react';
 
 const LearningHub = () => {
-  const [currentLevel, setCurrentLevel] = useState(1); // Changed from null to 1
+  const [currentLevel, setCurrentLevel] = useState(1);
   const [currentLesson, setCurrentLesson] = useState(null);
   const [userProgress, setUserProgress] = useState({
     levels: { 1: { unlocked: true } },
@@ -23,6 +23,13 @@ const LearningHub = () => {
 
   // Check if level is unlocked
   const isLevelUnlocked = (levelNum) => {
+    // Check if level is force unlocked in curriculum
+    const level = curriculum.levels[levelNum];
+    if (level && level.forceUnlock) {
+      return true;
+    }
+    
+    // Otherwise check progress
     return userProgress.levels[levelNum]?.unlocked || levelNum === 1;
   };
 
@@ -132,4 +139,31 @@ const LearningHub = () => {
                   </p>
                 </div>
                 {isLessonCompleted(lesson.id) ? (
-                  <Star className="
+                  <Star className="w-5 h-5 text-yellow-400" />
+                ) : (
+                  <ArrowRight className="w-5 h-5 text-purple-400" />
+                )}
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="space-y-8">
+      {!currentLesson && currentLevel === null && renderLevelSelection()}
+      {!currentLesson && currentLevel !== null && renderLessonSelection()}
+      {currentLesson && (
+        <PracticeSession
+          lessonData={currentLesson}
+          onProgress={handleProgress}
+          currentLevel={currentLevel}
+        />
+      )}
+    </div>
+  );
+};
+
+export default LearningHub;
