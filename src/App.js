@@ -1,4 +1,4 @@
-// Updated App to fix deployment issues
+// Updated App to fix deployment issues 
 import React, { useState, useEffect } from 'react';
 import KawaiiCompanions from './components/KawaiiCompanions';
 import ReferenceGuide from './components/ReferenceGuide';
