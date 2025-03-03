@@ -164,4 +164,95 @@ const HarpikaTuner = () => {
             </>
           ) : (
             <>
-              <Mic className="
+              <Mic className="w-5 h-5" />
+              Start Tuner
+            </>
+          )}
+        </button>
+      </div>
+
+      {isListening && (
+        <div className="space-y-6">
+          {/* Tuner Display */}
+          <div className="flex justify-center items-center space-x-4">
+            <div className="w-40 h-40 relative flex items-center justify-center bg-gray-100 rounded-full">
+              <div 
+                className={`absolute inset-4 rounded-full border-8 transition-colors ${
+                  tuningStatus === 'in-tune' ? 'border-green-500' :
+                  tuningStatus === 'too-high' ? 'border-yellow-500' :
+                  tuningStatus === 'too-low' ? 'border-yellow-500' :
+                  'border-gray-300'
+                }`}
+              ></div>
+              <div className="text-4xl font-bold">
+                {currentNote.note || '-'}{currentNote.octave || ''}
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <div className="text-lg font-bold mb-1">
+                Tab: <span className="text-purple-700">{currentNote.tab || '-'}</span>
+              </div>
+              <div className="text-sm text-gray-600">
+                Frequency: {currentFrequency ? Math.round(currentFrequency) : '--'} Hz
+              </div>
+              {tuningStatus && (
+                <div className={`mt-2 text-sm font-medium ${
+                  tuningStatus === 'in-tune' ? 'text-green-600' :
+                  tuningStatus === 'too-high' ? 'text-yellow-600' :
+                  tuningStatus === 'too-low' ? 'text-yellow-600' :
+                  'text-red-600'
+                }`}>
+                  {tuningStatus === 'in-tune' ? 'In Tune' :
+                   tuningStatus === 'too-high' ? 'Slightly High' :
+                   tuningStatus === 'too-low' ? 'Slightly Low' :
+                   'Out of Tune'}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* String Reference */}
+          <div className="pt-6 border-t">
+            <h3 className="font-medium mb-3 text-purple-900">String Reference:</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
+              {harpikaStrings.map((string, index) => (
+                <div 
+                  key={index}
+                  className={`p-2 rounded-md flex justify-between ${
+                    currentNote.tab === string.tab 
+                      ? 'bg-purple-100 text-purple-900 font-medium' 
+                      : 'hover:bg-gray-50'
+                  }`}
+                >
+                  <span>{string.note}{string.octave}</span>
+                  <span className="font-mono">{string.tab}</span>
+                  <span className="text-gray-500">{string.freq} Hz</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {!isListening && (
+        <div className="text-center text-gray-600 p-4 bg-gray-50 rounded-lg">
+          <Music className="w-8 h-8 mx-auto mb-3 text-gray-400" />
+          <p>Click "Start Tuner" and play a string to begin tuning your harpika.</p>
+        </div>
+      )}
+
+      <div className="mt-6 text-sm text-gray-500">
+        <p>For best results:</p>
+        <ul className="list-disc pl-5 mt-1 space-y-1">
+          <li>Use in a quiet environment</li>
+          <li>Hold your harpika close to the microphone</li>
+          <li>Play one string at a time clearly</li>
+          <li>Allow a moment for the tuner to stabilize</li>
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+export default HarpikaTuner;
