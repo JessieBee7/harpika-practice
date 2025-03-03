@@ -1,0 +1,40 @@
+/* Background animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+.animate-float-slow {
+  animation: float 7s ease-in-out infinite;
+}
+
+@keyframes butterfly-flight {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(20px, -15px) rotate(10deg); }
+  50% { transform: translate(-10px, -25px) rotate(-5deg); }
+  75% { transform: translate(-15px, 10px) rotate(5deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+.animate-butterfly {
+  animation: butterfly-flight 20s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+.animate-twinkle {
+  animation: twinkle 4s ease-in-out infinite;
+}
+
+@keyframes shooting-star {
+  0% { transform: translateX(0) translateY(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(-300px) translateY(100px); opacity: 0; }
+}
+.animate-shooting-star {
+  animation: shooting-star 5s linear infinite;
+}
