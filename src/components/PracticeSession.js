@@ -1,12 +1,23 @@
 import React, { useState } from 'react';
 import KawaiiCompanions from './KawaiiCompanions';
-import { Star } from 'lucide-react';
+import { Star, ArrowLeft } from 'lucide-react';
 
-const PracticeSession = ({ lessonData, currentLevel }) => {
+const PracticeSession = ({ lessonData, currentLevel, onBack }) => {
   const [characterMood, setCharacterMood] = useState('happy');
 
   return (
     <div className="space-y-6">
+      {/* Back Button */}
+      <div className="flex justify-between items-center">
+        <button
+          onClick={onBack}
+          className="flex items-center gap-2 text-purple-600 hover:text-purple-700"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back to Lessons
+        </button>
+      </div>
+
       {/* Kawaii Character */}
       <div className="relative">
         <KawaiiCompanions 
