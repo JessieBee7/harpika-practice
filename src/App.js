@@ -1,4 +1,4 @@
-// Updated App to fix deployment issues
+// Version 1.1.0 - Added animations, song library and tuner
 import React, { useState } from 'react';
 import KawaiiCompanions from './components/KawaiiCompanions';
 import ReferenceGuide from './components/ReferenceGuide';
@@ -112,6 +112,10 @@ function App() {
                 <ReferenceGuide />
               </div>
             )}
+          </div>
+          
+          <div className="mt-12 text-center text-xs text-gray-500">
+            <p>Version 1.1.0</p>
           </div>
         </div>
       </div>
