@@ -27,6 +27,14 @@ const SongLibrary = () => {
             "1°  7  6  5",
             "(3° 5°)  1°"
           ]
+        },
+        {
+          title: "Secunda",
+          tab: [
+            "5°  3°  1°  6",
+            "5  3  1  3",
+            "5  (3° 5°)  (1° 3°)  1°"
+          ]
         }
       ]
     },
@@ -39,6 +47,56 @@ const SongLibrary = () => {
             "3  5  1°  7",
             "6  1°  5  3",
             "(3 1° 5°)  (1 3 5)"
+          ]
+        },
+        {
+          title: "Bleach - Never Meant to Belong",
+          tab: [
+            "1  3  5  1°",
+            "7  5  3  1",
+            "(1 3 5)  (5 7 2°)"
+          ]
+        }
+      ]
+    },
+    finalFantasy: {
+      title: "Final Fantasy",
+      songs: [
+        {
+          title: "Aerith's Theme (Simple)",
+          tab: [
+            "7°  5°  3°  1°",
+            "(1° 3° 5°)  3°  1°",
+            "7  (1° 3°)  7  5"
+          ]
+        },
+        {
+          title: "To Zanarkand (Intro)",
+          tab: [
+            "5°  3°  1°  6",
+            "5  3  1  3",
+            "1  (3 5 1°)"
+          ]
+        }
+      ]
+    },
+    witcher: {
+      title: "The Witcher",
+      songs: [
+        {
+          title: "Toss a Coin to Your Witcher",
+          tab: [
+            "5  3°  1°  5",
+            "(1° 3° 5°)  3°  1°",
+            "7  5  3  1"
+          ]
+        },
+        {
+          title: "Geralt of Rivia",
+          tab: [
+            "1  3  5  1°",
+            "3  5  7  3°",
+            "(1 3 5)  (3° 5° 7°)"
           ]
         }
       ]
@@ -53,6 +111,14 @@ const SongLibrary = () => {
             "(1° 3° 5°)  3°  1°",
             "7  5  3  1"
           ]
+        },
+        {
+          title: "Let It Go (Chorus)",
+          tab: [
+            "1  1  5  3",
+            "1  1  6  5",
+            "(1 3 5)  (1° 3° 6)"
+          ]
         }
       ]
     },
@@ -65,6 +131,22 @@ const SongLibrary = () => {
             "5  5  1°",
             "7  7  3°",
             "(5 1° 3°)  (3 5 7)"
+          ]
+        },
+        {
+          title: "Jingle Bells",
+          tab: [
+            "3  3  3  3  3  5  1  2  3",
+            "5  5  5  5  5  3  3  3  3",
+            "(1 3 5)  (5 7 2°)  (1° 3° 5°)"
+          ]
+        },
+        {
+          title: "This Is Halloween",
+          tab: [
+            "5  5  5  3",
+            "1  1  1  6",
+            "(5 7 2°)  (1 3 5)"
           ]
         }
       ]
@@ -101,7 +183,7 @@ const SongLibrary = () => {
     return (
       <div className="bg-white rounded-lg shadow-lg p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold">{selectedSong.title}</h2>
+          <h2 className="text-xl font-bold text-purple-900">{selectedSong.title}</h2>
           <button
             onClick={() => setSelectedSong(null)}
             className="text-purple-600 hover:text-purple-700"
@@ -114,6 +196,16 @@ const SongLibrary = () => {
           {selectedSong.tab.map((line, index) => (
             <div key={index} className="mb-1">{line}</div>
           ))}
+        </div>
+        
+        <div className="mt-6 text-sm text-gray-500">
+          <p>Practice Tips:</p>
+          <ul className="list-disc pl-5 mt-1 space-y-1">
+            <li>Start slowly and focus on accuracy</li>
+            <li>Practice difficult sections separately</li>
+            <li>Use a metronome to maintain rhythm</li>
+            <li>Gradually increase tempo as you improve</li>
+          </ul>
         </div>
       </div>
     );
@@ -128,7 +220,7 @@ const SongLibrary = () => {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold">{category.title} Songs</h2>
+          <h2 className="text-2xl font-bold text-purple-900">{category.title} Songs</h2>
           <button
             onClick={() => setSelectedCategory(null)}
             className="text-purple-600 hover:text-purple-700"
@@ -146,7 +238,7 @@ const SongLibrary = () => {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-bold">{song.title}</h3>
+                  <h3 className="font-bold text-gray-800">{song.title}</h3>
                 </div>
                 <ChevronRight className="w-5 h-5 text-purple-400" />
               </div>
@@ -179,7 +271,7 @@ const SongLibrary = () => {
             className="p-6 rounded-xl text-left transition-all bg-white hover:bg-purple-50"
           >
             <div className="flex justify-between items-start">
-              <h3 className="text-lg font-bold">{category.title}</h3>
+              <h3 className="text-lg font-bold text-purple-900">{category.title}</h3>
               <Music className="w-5 h-5 text-purple-400" />
             </div>
             <div className="mt-4 text-sm text-gray-600">
