@@ -20,8 +20,10 @@ const BackgroundTheme = () => {
  }, []);
 
  return (
-   <div className="fixed inset-0 -z-10 transition-colors duration-1000"
-        style={{ backgroundColor: isDay ? '#e6f3ff' : '#1a237e' }}>
+   <div 
+     className="fixed inset-0 -z-10 transition-colors duration-1000 overflow-hidden"
+     style={{ backgroundColor: isDay ? '#e6f3ff' : '#1a237e' }}
+   >
      
      {/* Day Sky Elements */}
      {isDay && (
@@ -75,78 +77,23 @@ const BackgroundTheme = () => {
            </svg>
          </div>
 
-         {/* Kawaii Clouds */}
-         <div className="absolute left-10 top-20 animate-float-slow">
-           <svg width="150" height="100" viewBox="0 0 150 100">
-             <path
-               d="M25,60 Q37.5,45 50,60 Q62.5,40 75,60 Q87.5,45 100,60 Q112.5,40 125,60 Q125,80 75,80 Q25,80 25,60"
-               fill="#FFF"
-               opacity="0.9"
-             />
-             {/* Kawaii face */}
-             <g transform="translate(75 65)">
-               <circle cx="-15" cy="0" r="3" fill="#000" />
-               <circle cx="15" cy="0" r="3" fill="#000" />
-               <path d="M-10,10 Q0,15 10,10" fill="none" stroke="#000" strokeWidth="2" />
-             </g>
-           </svg>
-         </div>
-       </>
-     )}
-
-     {/* Night Sky Elements */}
-     {!isDay && (
-       <>
-         {/* Kawaii Moon */}
-         <div className="absolute right-10 top-10 animate-float">
-           <svg width="200" height="200" viewBox="0 0 200 200">
-             {/* Moon glow */}
-             <circle cx="100" cy="100" r="70" fill="#E1E7FF" opacity="0.2">
-               <animate attributeName="r" values="70;75;70" dur="4s" repeatCount="indefinite" />
-             </circle>
-             
-             {/* Main moon body */}
-             <path
-               d="M100,40 a60,60 0 1,1 0,120 a45,60 0 1,0 0,-120"
-               fill="#E1E7FF"
-             />
-             
-             {/* Kawaii face */}
-             <g transform="translate(80 100)">
-               {/* Sleepy eyes */}
-               <path d="M-20,-10 Q-15,-15 -10,-10" stroke="#000" strokeWidth="3" fill="none" />
-               <path d="M20,-10 Q15,-15 10,-10" stroke="#000" strokeWidth="3" fill="none" />
-               
-               {/* Rosy cheeks */}
-               <circle cx="-25" cy="10" r="5" fill="#FFB6C1" opacity="0.3" />
-               <circle cx="25" cy="10" r="5" fill="#FFB6C1" opacity="0.3" />
-               
-               {/* Gentle smile */}
-               <path d="M-15,15 Q0,20 15,15" fill="none" stroke="#000" strokeWidth="3" />
-             </g>
-           </svg>
-         </div>
-
-         {/* Stars */}
-         {[...Array(20)].map((_, i) => (
-           <div
+         {/* Animated Floating Clouds */}
+         {[...Array(5)].map((_, i) => (
+           <div 
              key={i}
-             className="absolute animate-twinkle"
+             className="absolute animate-float-slow"
              style={{
-               left: `${Math.random() * 100}%`,
-               top: `${Math.random() * 60}%`,
-               animationDelay: `${Math.random() * 3}s`
+               left: `${10 + (i * 20)}%`,
+               top: `${10 + (i % 3) * 15}%`,
+               animationDelay: `${i * 0.5}s`,
+               transform: `scale(${0.5 + (i % 3) * 0.3})`,
+               opacity: 0.9 - (i % 3) * 0.2,
+               zIndex: -5
              }}
            >
-             <svg width="10" height="10" viewBox="0 0 10 10">
-               <circle cx="5" cy="5" r="2.5" fill="#FFF" />
-             </svg>
-           </div>
-         ))}
-       </>
-     )}
-   </div>
- );
-};
-
-export default BackgroundTheme;
+             <svg width="150" height="100" viewBox="0 0 150 100">
+               <path
+                 d="M25,60 Q37.5,45 50,60 Q62.5,40 75,60 Q87.5,45 100,60 Q112.5,40 125,60 Q125,80 75,80 Q25,80 25,60"
+                 fill="#FFF"
+               />
+               {i % 2 === 0 && (
