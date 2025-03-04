@@ -1,0 +1,4 @@
+{
+  "buildCommand": "mkdir -p temp-build && cp -r public temp-build/ && cp -r src temp-build/ && rm temp-build/src/components/LearningHub.js && cd temp-build && npm run build",
+  "outputDirectory": "temp-build/build"
+}
