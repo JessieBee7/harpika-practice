@@ -11,6 +11,8 @@ import TestComponent from './components/TestComponent';
 function App() {
   const [currentView, setCurrentView] = useState('home');
   const [customTabs, setCustomTabs] = useState([]);
+  const [editingTab, setEditingTab] = useState(null);
+  const [editingTabIndex, setEditingTabIndex] = useState(null);
   
   // Load any saved custom tabs from localStorage when app starts
   useEffect(() => {
@@ -31,11 +33,38 @@ function App() {
     }
   }, [customTabs]);
 
-  // Handle saving a new tab from the Tab Creator
-  const handleSaveTab = (newTab) => {
-    setCustomTabs(prevTabs => [...prevTabs, newTab]);
-    // Optionally switch to the Song Library view to see the new tab
+  // Handle saving a new tab or updating an existing one
+  const handleSaveTab = (index, tabData, isEditing) => {
+    if (isEditing && index !== null) {
+      // Update existing tab
+      setCustomTabs(prevTabs => {
+        const newTabs = [...prevTabs];
+        newTabs[index] = tabData;
+        return newTabs;
+      });
+    } else {
+      // Add new tab
+      setCustomTabs(prevTabs => [...prevTabs, tabData]);
+    }
+    
+    // Reset editing state
+    setEditingTab(null);
+    setEditingTabIndex(null);
+    
+    // Switch to Song Library view to see the changes
     setCurrentView('songs');
+  };
+
+  // Handle initiating edit of a tab
+  const handleEditTab = (index, tab) => {
+    setEditingTab(tab);
+    setEditingTabIndex(index);
+    setCurrentView('reference');
+  };
+
+  // Handle deleting a tab
+  const handleDeleteTab = (index) => {
+    setCustomTabs(prevTabs => prevTabs.filter((_, i) => i !== index));
   };
 
   return (
@@ -132,13 +161,21 @@ function App() {
 
             {currentView === 'songs' && (
               <div className="bg-white/90 rounded-lg shadow-lg backdrop-blur-sm p-6">
-                <SongLibrary customTabs={customTabs} />
+                <SongLibrary 
+                  customTabs={customTabs} 
+                  onEditTab={handleEditTab}
+                  onDeleteTab={handleDeleteTab}
+                />
               </div>
             )}
 
             {currentView === 'reference' && (
               <div className="bg-white/90 rounded-lg shadow-lg backdrop-blur-sm">
-                <ReferenceGuide onSaveTab={handleSaveTab} />
+                <ReferenceGuide 
+                  onSaveTab={handleSaveTab} 
+                  editingTab={editingTab}
+                  editingTabIndex={editingTabIndex}
+                />
               </div>
             )}
           </div>
