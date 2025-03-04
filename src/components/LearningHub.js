@@ -423,6 +423,11 @@ const LearningHub = () => {
   // Render level selection
   const renderLevelSelection = () => (
     <div className="space-y-6">
+      {/* Visual indicator for testing */}
+      <div className="bg-purple-100 p-2 mb-4 rounded text-center">
+        <p className="font-bold">NEW Learning Hub - Version 1.2.0</p>
+      </div>
+      
       <div className="bg-purple-50 rounded-lg p-4 mb-6">
         <div className="flex items-center gap-4">
           <div className="relative">
