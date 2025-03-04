@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { Music, Search, ChevronRight } from 'lucide-react';
 
-const SongLibrary = () => {
+const SongLibrary = ({ customTabs = [] }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSong, setSelectedSong] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
   // Song categories
   const songCategories = {
+    custom: {
+      title: "My Custom Tabs",
+      songs: []  // This will be populated with user-created tabs
+    },
     skyrim: {
       title: "Skyrim",
       songs: [
@@ -153,6 +157,22 @@ const SongLibrary = () => {
     }
   };
 
+  // Add custom tabs to the appropriate categories
+  if (customTabs && customTabs.length > 0) {
+    customTabs.forEach(tab => {
+      // Make sure the category exists
+      if (!songCategories[tab.category]) {
+        songCategories[tab.category] = {
+          title: tab.category.charAt(0).toUpperCase() + tab.category.slice(1),
+          songs: []
+        };
+      }
+      
+      // Add the tab to the appropriate category
+      songCategories[tab.category].songs.push(tab);
+    });
+  }
+
   // Filtered songs based on search
   const getFilteredSongs = () => {
     if (!searchQuery) return songCategories;
@@ -292,4 +312,4 @@ const SongLibrary = () => {
   );
 };
 
-export default SongLibrary; 
+export default SongLibrary;
