@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Music, Search, ChevronRight } from 'lucide-react';
+import { Music, Search, ChevronRight, Edit, Trash } from 'lucide-react';
 
-const SongLibrary = ({ customTabs = [] }) => {
+const SongLibrary = ({ customTabs = [], onEditTab, onDeleteTab }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSong, setSelectedSong] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
@@ -159,7 +159,7 @@ const SongLibrary = ({ customTabs = [] }) => {
 
   // Add custom tabs to the appropriate categories
   if (customTabs && customTabs.length > 0) {
-    customTabs.forEach(tab => {
+    customTabs.forEach((tab, index) => {
       // Make sure the category exists
       if (!songCategories[tab.category]) {
         songCategories[tab.category] = {
@@ -168,8 +168,12 @@ const SongLibrary = ({ customTabs = [] }) => {
         };
       }
       
-      // Add the tab to the appropriate category
-      songCategories[tab.category].songs.push(tab);
+      // Add the tab to the appropriate category with index reference
+      songCategories[tab.category].songs.push({
+        ...tab,
+        isCustom: true,
+        customIndex: index // Store the index for editing/deleting
+      });
     });
   }
 
@@ -196,6 +200,23 @@ const SongLibrary = ({ customTabs = [] }) => {
 
   const filteredCategories = getFilteredSongs();
 
+  // Handle edit button click
+  const handleEditClick = (song) => {
+    if (onEditTab && song.isCustom) {
+      onEditTab(song.customIndex, song);
+    }
+  };
+
+  // Handle delete button click
+  const handleDeleteClick = (song) => {
+    if (onDeleteTab && song.isCustom) {
+      if (window.confirm(`Are you sure you want to delete "${song.title}"?`)) {
+        onDeleteTab(song.customIndex);
+        setSelectedSong(null);
+      }
+    }
+  };
+
   // Render song viewer
   const renderSongViewer = () => {
     if (!selectedSong) return null;
@@ -204,12 +225,32 @@ const SongLibrary = ({ customTabs = [] }) => {
       <div className="bg-white rounded-lg shadow-lg p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-bold text-purple-900">{selectedSong.title}</h2>
-          <button
-            onClick={() => setSelectedSong(null)}
-            className="text-purple-600 hover:text-purple-700"
-          >
-            Back to Songs
-          </button>
+          <div className="flex gap-2">
+            {selectedSong.isCustom && (
+              <>
+                <button
+                  onClick={() => handleEditClick(selectedSong)}
+                  className="text-blue-600 hover:text-blue-700 flex items-center gap-1"
+                >
+                  <Edit className="w-4 h-4" />
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDeleteClick(selectedSong)}
+                  className="text-red-600 hover:text-red-700 flex items-center gap-1"
+                >
+                  <Trash className="w-4 h-4" />
+                  Delete
+                </button>
+              </>
+            )}
+            <button
+              onClick={() => setSelectedSong(null)}
+              className="text-purple-600 hover:text-purple-700"
+            >
+              Back to Songs
+            </button>
+          </div>
         </div>
         
         <div className="font-mono text-lg bg-purple-50 p-4 rounded-lg mb-4">
@@ -259,8 +300,35 @@ const SongLibrary = ({ customTabs = [] }) => {
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="font-bold text-gray-800">{song.title}</h3>
+                  {song.isCustom && (
+                    <span className="text-xs text-purple-600">(custom)</span>
+                  )}
                 </div>
-                <ChevronRight className="w-5 h-5 text-purple-400" />
+                <div className="flex items-center gap-2">
+                  {song.isCustom && (
+                    <>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditClick(song);
+                        }}
+                        className="p-1 text-blue-600 hover:text-blue-800"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteClick(song);
+                        }}
+                        className="p-1 text-red-600 hover:text-red-800"
+                      >
+                        <Trash className="w-4 h-4" />
+                      </button>
+                    </>
+                  )}
+                  <ChevronRight className="w-5 h-5 text-purple-400" />
+                </div>
               </div>
             </button>
           ))}
