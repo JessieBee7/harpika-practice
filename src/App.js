@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import KawaiiCompanions from './components/KawaiiCompanions';
 import ReferenceGuide from './components/ReferenceGuide';
 import BackgroundTheme from './components/BackgroundTheme';
-import LearningHub from './components/NewLearningHub';
+import LearningHub from './components/LearningHub'; // Import from LearningHub, not NewLearningHub
 import SongLibrary from './components/SongLibrary';
 import TestComponent from './components/TestComponent';
 
