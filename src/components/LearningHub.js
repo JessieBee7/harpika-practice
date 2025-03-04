@@ -41,4 +41,4 @@ const LearningHub = () => {
           onClick={() => handleLevelSelect(Number(levelNum))}
           className="p-6 rounded-xl text-left transition-all bg-white hover:bg-purple-50"
         >
-          <div className="flex just
+          <div className="flex justify-between items-start">
