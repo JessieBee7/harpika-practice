@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import './animations.css';
 import App from './App';
+import './standalone.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
