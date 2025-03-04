@@ -1,5 +1,5 @@
-// FORCE NEW BUILD - VERSION 2 - TIMESTAMP: March 04, 2025
-// Version 1.1.0 - Added animations, song library and tuner
+// FORCE NEW BUILD - VERSION 3 - TIMESTAMP: March 04, 2025 - FIXED LEARNING HUB
+// Version 1.2.0 - Added functioning Learning Hub
 import React, { useState, useEffect } from 'react';
 import KawaiiCompanions from './components/KawaiiCompanions';
 import ReferenceGuide from './components/ReferenceGuide';
