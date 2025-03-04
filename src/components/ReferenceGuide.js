@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import HarpikaTuner from './HarpikaTuner';
 import TabCreator from './TabCreator';
 import { Music, BookOpen, Info, Edit } from 'lucide-react';
 
-const ReferenceGuide = ({ onSaveTab }) => {
+const ReferenceGuide = ({ onSaveTab, editingTab = null, editingTabIndex = null }) => {
   const [activeTab, setActiveTab] = useState('harpika');
+  
+  // Switch to creator tab if we're editing
+  useEffect(() => {
+    if (editingTab) {
+      setActiveTab('creator');
+    }
+  }, [editingTab]);
   
   const harpikaLayout = [
     { note: 'D6', tab: '2°°', position: 1 },
@@ -139,7 +146,11 @@ const ReferenceGuide = ({ onSaveTab }) => {
         );
       
       case 'creator':
-        return <TabCreator onSaveTab={onSaveTab} />;
+        return <TabCreator 
+          onSaveTab={onSaveTab} 
+          editingTab={editingTab} 
+          editingIndex={editingTabIndex} 
+        />;
         
       default:
         return null;
