@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import HarpikaTuner from './HarpikaTuner';
-import { Music, BookOpen, Info } from 'lucide-react';
+import TabCreator from './TabCreator';
+import { Music, BookOpen, Info, Edit } from 'lucide-react';
 
-const ReferenceGuide = () => {
+const ReferenceGuide = ({ onSaveTab }) => {
   const [activeTab, setActiveTab] = useState('harpika');
   
   const harpikaLayout = [
@@ -29,7 +30,8 @@ const ReferenceGuide = () => {
   const tabs = [
     { id: 'harpika', label: 'Harpika Guide', icon: <Info className="w-4 h-4" /> },
     { id: 'tuner', label: 'Tuner', icon: <Music className="w-4 h-4" /> },
-    { id: 'notation', label: 'Tab Notation', icon: <BookOpen className="w-4 h-4" /> }
+    { id: 'notation', label: 'Tab Notation', icon: <BookOpen className="w-4 h-4" /> },
+    { id: 'creator', label: 'Tab Creator', icon: <Edit className="w-4 h-4" /> }
   ];
 
   // Tabs content
@@ -135,6 +137,9 @@ const ReferenceGuide = () => {
             </div>
           </div>
         );
+      
+      case 'creator':
+        return <TabCreator onSaveTab={onSaveTab} />;
         
       default:
         return null;
@@ -146,7 +151,7 @@ const ReferenceGuide = () => {
       <h1 className="text-2xl font-bold mb-6 text-purple-900">Reference Guide</h1>
       
       {/* Tab Navigation */}
-      <div className="flex border-b mb-6">
+      <div className="flex flex-wrap border-b mb-6">
         {tabs.map(tab => (
           <button
             key={tab.id}
