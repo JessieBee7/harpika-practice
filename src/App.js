@@ -1,6 +1,6 @@
 // FORCE NEW BUILD - VERSION 2 - TIMESTAMP: March 04, 2025
 // Version 1.1.0 - Added animations, song library and tuner
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import KawaiiCompanions from './components/KawaiiCompanions';
 import ReferenceGuide from './components/ReferenceGuide';
 import BackgroundTheme from './components/BackgroundTheme';
@@ -10,6 +10,33 @@ import TestComponent from './components/TestComponent';
 
 function App() {
   const [currentView, setCurrentView] = useState('home');
+  const [customTabs, setCustomTabs] = useState([]);
+  
+  // Load any saved custom tabs from localStorage when app starts
+  useEffect(() => {
+    const savedTabs = localStorage.getItem('harpika-custom-tabs');
+    if (savedTabs) {
+      try {
+        setCustomTabs(JSON.parse(savedTabs));
+      } catch (err) {
+        console.error('Error loading saved tabs:', err);
+      }
+    }
+  }, []);
+  
+  // Save custom tabs to localStorage whenever they change
+  useEffect(() => {
+    if (customTabs.length > 0) {
+      localStorage.setItem('harpika-custom-tabs', JSON.stringify(customTabs));
+    }
+  }, [customTabs]);
+
+  // Handle saving a new tab from the Tab Creator
+  const handleSaveTab = (newTab) => {
+    setCustomTabs(prevTabs => [...prevTabs, newTab]);
+    // Optionally switch to the Song Library view to see the new tab
+    setCurrentView('songs');
+  };
 
   return (
     <div className="min-h-screen">
@@ -22,8 +49,6 @@ function App() {
           <h1 className="text-4xl font-bold text-center mb-6 text-gray-800 dark:text-white">
             Harpika Practice Companion
           </h1>
-          
-          <TestComponent />
           
           {/* Navigation */}
           <div className="flex flex-wrap gap-3 mb-6 justify-center">
@@ -107,13 +132,13 @@ function App() {
 
             {currentView === 'songs' && (
               <div className="bg-white/90 rounded-lg shadow-lg backdrop-blur-sm p-6">
-                <SongLibrary />
+                <SongLibrary customTabs={customTabs} />
               </div>
             )}
 
             {currentView === 'reference' && (
               <div className="bg-white/90 rounded-lg shadow-lg backdrop-blur-sm">
-                <ReferenceGuide />
+                <ReferenceGuide onSaveTab={handleSaveTab} />
               </div>
             )}
           </div>
