@@ -1,13 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Plus, Save, Trash, Music, AlertCircle } from 'lucide-react';
 
-const TabCreator = ({ onSaveTab }) => {
+const TabCreator = ({ onSaveTab, editingTab = null, editingIndex = null }) => {
   const [tabTitle, setTabTitle] = useState('');
   const [tabLines, setTabLines] = useState(['']);
   const [category, setCategory] = useState('custom');
   const [previewMode, setPreviewMode] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+
+  // Initialize form if editing an existing tab
+  useEffect(() => {
+    if (editingTab) {
+      setTabTitle(editingTab.title || '');
+      setTabLines(editingTab.tab || ['']);
+      setCategory(editingTab.category || 'custom');
+      setIsEditing(true);
+    } else {
+      setTabTitle('');
+      setTabLines(['']);
+      setCategory('custom');
+      setIsEditing(false);
+    }
+  }, [editingTab]);
 
   // Available categories for songs
   const categories = [
@@ -61,28 +77,35 @@ const TabCreator = ({ onSaveTab }) => {
   const handleSaveTab = () => {
     if (!validateTab()) return;
 
-    const newTab = {
+    const tabData = {
       title: tabTitle,
       tab: tabLines.filter(line => line.trim()),
       category
     };
 
-    onSaveTab(newTab);
+    if (isEditing && editingIndex !== null) {
+      onSaveTab(editingIndex, tabData, true);
+    } else {
+      onSaveTab(null, tabData, false);
+    }
     
     // Reset form after saving
     setTabTitle('');
     setTabLines(['']);
     setCategory('custom');
     setErrorMessage('');
+    setIsEditing(false);
     
     // Show confirmation
-    alert('Your tab has been saved to the Song Library!');
+    alert(`Your tab has been ${isEditing ? 'updated' : 'saved'} to the Song Library!`);
   };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-bold text-purple-900">Create Your Own Tabs</h2>
+        <h2 className="text-xl font-bold text-purple-900">
+          {isEditing ? 'Edit Tab' : 'Create Your Own Tabs'}
+        </h2>
         <button 
           onClick={() => setShowHelp(!showHelp)}
           className="text-purple-600 flex items-center gap-1 text-sm"
@@ -216,7 +239,7 @@ const TabCreator = ({ onSaveTab }) => {
             className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 flex items-center gap-2"
           >
             <Save className="w-4 h-4" />
-            Save to Library
+            {isEditing ? 'Update Tab' : 'Save to Library'}
           </button>
         </div>
       </div>
