@@ -17,8 +17,8 @@ function App() {
       {/* Main Content */}
       <div className="relative z-10 p-4">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl font-bold text-center mb-6 text-gray-800 dark:text-white">
-            Harpika Practice Companion
+          <h1 className="text-4xl font-bold text-center mb-6 text-purple-800 dark:text-white">
+            Harpika Practice Companion - NEW VERSION
           </h1>
           
           {/* Navigation */}
