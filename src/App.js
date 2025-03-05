@@ -1,10 +1,10 @@
-// FORCE NEW BUILD - VERSION 3 - TIMESTAMP: March 05, 2025 - FIXED LEARNING HUB
+// FORCE NEW BUILD - VERSION 3 - TIMESTAMP: March 05, 2025 - DIRECT HTML TEST
 // Version 1.2.0 - Added functioning Learning Hub
 import React, { useState, useEffect } from 'react';
 import KawaiiCompanions from './components/KawaiiCompanions';
 import ReferenceGuide from './components/ReferenceGuide';
 import BackgroundTheme from './components/BackgroundTheme';
-// Import commented out for direct testing
+// Import commented out for direct HTML test
 // import LearningHub from './components/LearningHub';
 import SongLibrary from './components/SongLibrary';
 import TestComponent from './components/TestComponent';
@@ -155,12 +155,16 @@ function App() {
             )}
 
             {currentView === 'learn' && (
-              <div className="bg-white/90 rounded-lg shadow-lg backdrop-blur-sm p-6">
-                <h2 className="text-2xl font-bold mb-4 text-purple-900">Simple Learning Hub</h2>
-                <div className="bg-purple-100 p-4 rounded-lg">
-                  <p>This is a direct component test in App.js.</p>
-                  <p className="font-bold mt-2">Version: 1.4.0 - Inline Test</p>
-                </div>
+              <div className="bg-white/90 rounded-lg shadow-lg backdrop-blur-sm p-6"
+                  dangerouslySetInnerHTML={{
+                    __html: `
+                      <h2 class="text-2xl font-bold mb-4 text-purple-900">Direct HTML Test</h2>
+                      <div class="bg-purple-100 p-4 rounded-lg">
+                        <p>This content is directly inserted as HTML to bypass component issues.</p>
+                        <p class="font-bold mt-2">Version: 1.5.0 - Direct HTML Test</p>
+                      </div>
+                    `
+                  }}>
               </div>
             )}
 
@@ -186,7 +190,7 @@ function App() {
           </div>
           
           <div className="mt-12 text-center text-xs text-gray-500">
-            <p>Version 1.2.0</p>
+            <p>Version 1.5.0 - HTML Test</p>
           </div>
         </div>
       </div>
