@@ -1,5 +1,5 @@
-// FORCE NEW BUILD - VERSION 4 - HOME PAGE TEST - TIMESTAMP: March 05, 2025
-// Version 1.3.0 - Testing deployment
+// FORCE NEW BUILD - VERSION 5 - SIMPLIFIED LEARNING HUB - TIMESTAMP: March 05, 2025
+// Version 1.4.0 - Simplified learning system with clear progression
 import React, { useState, useEffect } from 'react';
 import KawaiiCompanions from './components/KawaiiCompanions';
 import ReferenceGuide from './components/ReferenceGuide';
@@ -75,8 +75,8 @@ function App() {
       {/* Main Content */}
       <div className="relative z-10 p-4">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl font-bold text-center mb-6 text-red-600 dark:text-white">
-            UPDATED Harpika Practice Companion
+          <h1 className="text-4xl font-bold text-center mb-6 text-gray-800 dark:text-white">
+            Harpika Practice Companion
           </h1>
           
           {/* Navigation */}
@@ -127,10 +127,6 @@ function App() {
           <div className="space-y-6">
             {currentView === 'home' && (
               <>
-                <div className="bg-red-100 p-4 rounded-lg text-center mb-4">
-                  <p className="font-bold text-red-600">THIS IS A TEST BANNER - VERSION 1.6.0</p>
-                </div>
-                
                 <div className="scale-150 transform origin-top mb-16">
                   <KawaiiCompanions level={1} mood="happy" />
                 </div>
@@ -185,7 +181,7 @@ function App() {
           </div>
           
           <div className="mt-12 text-center text-xs text-gray-500">
-            <p>Version 1.6.0 - Home Page Test</p>
+            <p>Version 1.4.0 - Simplified Learning Hub</p>
           </div>
         </div>
       </div>
