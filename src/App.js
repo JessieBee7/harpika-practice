@@ -1,11 +1,10 @@
-// FORCE NEW BUILD - VERSION 3 - TIMESTAMP: March 05, 2025 - DIRECT HTML TEST
-// Version 1.2.0 - Added functioning Learning Hub
+// FORCE NEW BUILD - VERSION 4 - HOME PAGE TEST - TIMESTAMP: March 05, 2025
+// Version 1.3.0 - Testing deployment
 import React, { useState, useEffect } from 'react';
 import KawaiiCompanions from './components/KawaiiCompanions';
 import ReferenceGuide from './components/ReferenceGuide';
 import BackgroundTheme from './components/BackgroundTheme';
-// Import commented out for direct HTML test
-// import LearningHub from './components/LearningHub';
+import LearningHub from './components/LearningHub';
 import SongLibrary from './components/SongLibrary';
 import TestComponent from './components/TestComponent';
 
@@ -76,8 +75,8 @@ function App() {
       {/* Main Content */}
       <div className="relative z-10 p-4">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl font-bold text-center mb-6 text-gray-800 dark:text-white">
-            Harpika Practice Companion
+          <h1 className="text-4xl font-bold text-center mb-6 text-red-600 dark:text-white">
+            UPDATED Harpika Practice Companion
           </h1>
           
           {/* Navigation */}
@@ -128,6 +127,10 @@ function App() {
           <div className="space-y-6">
             {currentView === 'home' && (
               <>
+                <div className="bg-red-100 p-4 rounded-lg text-center mb-4">
+                  <p className="font-bold text-red-600">THIS IS A TEST BANNER - VERSION 1.6.0</p>
+                </div>
+                
                 <div className="scale-150 transform origin-top mb-16">
                   <KawaiiCompanions level={1} mood="happy" />
                 </div>
@@ -155,16 +158,8 @@ function App() {
             )}
 
             {currentView === 'learn' && (
-              <div className="bg-white/90 rounded-lg shadow-lg backdrop-blur-sm p-6"
-                  dangerouslySetInnerHTML={{
-                    __html: `
-                      <h2 class="text-2xl font-bold mb-4 text-purple-900">Direct HTML Test</h2>
-                      <div class="bg-purple-100 p-4 rounded-lg">
-                        <p>This content is directly inserted as HTML to bypass component issues.</p>
-                        <p class="font-bold mt-2">Version: 1.5.0 - Direct HTML Test</p>
-                      </div>
-                    `
-                  }}>
+              <div className="bg-white/90 rounded-lg shadow-lg backdrop-blur-sm">
+                <LearningHub />
               </div>
             )}
 
@@ -190,7 +185,7 @@ function App() {
           </div>
           
           <div className="mt-12 text-center text-xs text-gray-500">
-            <p>Version 1.5.0 - HTML Test</p>
+            <p>Version 1.6.0 - Home Page Test</p>
           </div>
         </div>
       </div>
