@@ -1,5 +1,5 @@
-// FORCE NEW BUILD - VERSION 5 - SIMPLIFIED LEARNING HUB - TIMESTAMP: March 05, 2025
-// Version 1.4.0 - Simplified learning system with clear progression
+// FORCE NEW BUILD - VERSION 6 - TEST FILE - TIMESTAMP: March 05, 2025
+// Version 1.5.0 - Testing deployment with minimal test file
 import React, { useState, useEffect } from 'react';
 import KawaiiCompanions from './components/KawaiiCompanions';
 import ReferenceGuide from './components/ReferenceGuide';
@@ -7,6 +7,7 @@ import BackgroundTheme from './components/BackgroundTheme';
 import LearningHub from './components/LearningHub';
 import SongLibrary from './components/SongLibrary';
 import TestComponent from './components/TestComponent';
+import TestFile from './components/TestFile';
 
 function App() {
   const [currentView, setCurrentView] = useState('home');
@@ -78,6 +79,9 @@ function App() {
           <h1 className="text-4xl font-bold text-center mb-6 text-gray-800 dark:text-white">
             Harpika Practice Companion
           </h1>
+          
+          {/* Test File Component - ADDED FOR TESTING */}
+          <TestFile />
           
           {/* Navigation */}
           <div className="flex flex-wrap gap-3 mb-6 justify-center">
@@ -181,7 +185,7 @@ function App() {
           </div>
           
           <div className="mt-12 text-center text-xs text-gray-500">
-            <p>Version 1.4.0 - Simplified Learning Hub</p>
+            <p>Version 1.5.0 - Test File Added</p>
           </div>
         </div>
       </div>
